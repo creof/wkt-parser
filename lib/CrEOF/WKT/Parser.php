@@ -279,27 +279,6 @@ class Parser
     }
 
     /**
-     * @param string $expected
-     * @param array  $token
-     *
-     * @throws UnexpectedValueException
-     */
-//    protected function syntaxError($expected = '', $token = null)
-//    {
-//        if ($token === null) {
-//            $token = $this->lexer->lookahead;
-//        }
-//
-//        $tokenPos = (isset($token['position'])) ? $token['position'] : '-1';
-//
-//        $message  = 'line 0, col ' . $tokenPos . ': Error: ';
-//        $message .= ($expected !== '') ? 'Expected ' . $expected . ', got ' : 'Unexpected ';
-//        $message .= ($this->lexer->lookahead === null) ? 'end of string.' : '"' . $token['value'] . '"';
-//
-//        throw new UnexpectedValueException($message);
-//    }
-
-    /**
      * Create exception with descriptive error message
      *
      * @param string $expected
