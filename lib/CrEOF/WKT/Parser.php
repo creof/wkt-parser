@@ -26,7 +26,7 @@ namespace CrEOF\WKT;
 use CrEOF\WKT\Exception\UnexpectedValueException;
 
 /**
- * Parse spatial text values
+ * Parse WKT/EWKT spatial object strings
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license http://dlambert.mit-license.org MIT
@@ -80,6 +80,8 @@ class Parser
     }
 
     /**
+     * Match SRID in EWKT object
+     *
      * @return int
      */
     protected function srid()
@@ -96,6 +98,8 @@ class Parser
     }
 
     /**
+     * Match spatial data type
+     *
      * @return string
      */
     protected function type()
@@ -106,6 +110,8 @@ class Parser
     }
 
     /**
+     * Match a coordinate pair
+     *
      * @return array
      */
     protected function point()
@@ -117,6 +123,8 @@ class Parser
     }
 
     /**
+     * Match a number and optional exponent
+     *
      * @return int|float
      */
     protected function coordinate()
@@ -136,6 +144,8 @@ class Parser
     }
 
     /**
+     * Match LINESTRING value
+     *
      * @return array[]
      */
     protected function lineString()
@@ -144,6 +154,8 @@ class Parser
     }
 
     /**
+     * Match POLYGON value
+     *
      * @return array[]
      */
     protected function polygon()
@@ -152,6 +164,8 @@ class Parser
     }
 
     /**
+     * Match a list of coordinates
+     *
      * @return array[]
      */
     protected function pointList()
@@ -168,6 +182,8 @@ class Parser
     }
 
     /**
+     * Match nested lists of coordinates
+     *
      * @return array[]
      */
     protected function pointLists()
@@ -191,6 +207,8 @@ class Parser
     }
 
     /**
+     * Match MULTIPOLYGON value
+     *
      * @return array[]
      */
     protected function multiPolygon()
@@ -214,6 +232,8 @@ class Parser
     }
 
     /**
+     * Match MULTIPOINT value
+     *
      * @return array[]
      */
     protected function multiPoint()
@@ -222,6 +242,8 @@ class Parser
     }
 
     /**
+     * Match MULTILINESTRING value
+     *
      * @return array[]
      */
     protected function multiLineString()
@@ -230,6 +252,8 @@ class Parser
     }
 
     /**
+     * Match spatial geometry object
+     *
      * @return array
      */
     protected function geometry()
@@ -249,6 +273,8 @@ class Parser
     }
 
     /**
+     * Match GEOMETRYCOLLECTION value
+     *
      * @return array[]
      */
     protected function geometryCollection()
@@ -265,6 +291,8 @@ class Parser
     }
 
     /**
+     * Match token at current position in input
+     *
      * @param $token
      */
     protected function match($token)
