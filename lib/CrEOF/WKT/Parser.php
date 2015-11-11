@@ -317,14 +317,8 @@ class Parser
     {
         $expected = sprintf('Expected %s, got', $expected);
         $token    = $this->lexer->lookahead;
-
-        if (null === $this->lexer->lookahead) {
-            $found = 'end of string.';
-        } else {
-            $found = sprintf('"%s"', $token['value']);
-        }
-
-        $message = sprintf(
+        $found    = null === $this->lexer->lookahead ? 'end of string.' : sprintf('"%s"', $token['value']);
+        $message  = sprintf(
             '[Syntax Error] line 0, col %d: Error: %s %s in value "%s"',
             isset($token['position']) ? $token['position'] : '-1',
             $expected,
