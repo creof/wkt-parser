@@ -93,16 +93,12 @@ class Lexer extends AbstractLexer
                 }
 
                 return self::T_STRING;
-            case ($value === '.'):
-                return self::T_DOT;
             case ($value === ','):
                 return self::T_COMMA;
             case ($value === '('):
                 return self::T_OPEN_PARENTHESIS;
             case ($value === ')'):
                 return self::T_CLOSE_PARENTHESIS;
-            case ($value === '-'):
-                return self::T_MINUS;
             case ($value === '='):
                 return self::T_EQUALS;
             case ($value === ';'):

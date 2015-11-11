@@ -123,30 +123,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser->parse();
     }
 
-    /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 12: Error: Expected CrEOF\WKT\Lexer::T_INTEGER, got "." in value "POINT(34.23 .)"
-     */
-    public function testParsingPointValueInvalid()
-    {
-        $value  = 'POINT(34.23 .)';
-        $parser = new Parser($value);
-
-        $parser->parse();
-    }
-
-    /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 12: Error: Expected CrEOF\WKT\Lexer::T_INTEGER, got "-" in value "POINT(34.23 -"
-     */
-    public function testParsingPointTruncatedValue()
-    {
-        $value  = 'POINT(34.23 -';
-        $parser = new Parser($value);
-
-        $parser->parse();
-    }
-
     public function testParsingPointScientificValueWithSrid()
     {
         $value    = 'SRID=4326;POINT(4.23e-005 -8E-003)';
