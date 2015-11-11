@@ -72,8 +72,6 @@ class Lexer extends AbstractLexer
      */
     protected function getType(&$value)
     {
-        $type = self::T_NONE;
-
         switch (true) {
             case (is_numeric($value)):
                 if (strpos($value, '.') !== false) {
@@ -110,10 +108,8 @@ class Lexer extends AbstractLexer
             case ($value === ';'):
                 return self::T_SEMICOLON;
             default:
-                break;
+                return self::T_NONE;
         }
-
-        return $type;
     }
 
     /**
