@@ -123,7 +123,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser->parse();
     }
 
-    public function testParsingPointScientificValueWithSrid()
+    public function testParsingPointValueScientificWithSrid()
     {
         $value    = 'SRID=4326;POINT(4.23e-005 -8E-003)';
         $parser   = new Parser($value);
@@ -142,7 +142,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
      * @expectedExceptionMessage [Syntax Error] line 0, col 20: Error: Expected CrEOF\WKT\Lexer::T_INTEGER, got "test" in value "SRID=4326;POINT(4.23test-005 -8e-003)"
      */
-    public function testParsingWrongPointScientificValueWithSrid()
+    public function testParsingPointValueWrongScientificWithSrid()
     {
         $value    = 'SRID=4326;POINT(4.23test-005 -8e-003)';
         $parser   = new Parser($value);
@@ -281,7 +281,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser->parse();
     }
 
-    public function testParsingMultiRingPolygonValue()
+    public function testParsingPolygonValueMultiRing()
     {
         $value    = 'POLYGON((0 0,10 0,10 10,0 10,0 0),(5 5,7 5,7 7,5 7,5 5))';
         $parser   = new Parser($value);
@@ -311,7 +311,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testParsingMultiRingPolygonValueWithSrid()
+    public function testParsingPolygonValueMultiRingWithSrid()
     {
         $value    = 'SRID=4326;POLYGON((0 0,10 0,10 10,0 10,0 0),(5 5,7 5,7 7,5 7,5 5))';
         $parser   = new Parser($value);
@@ -345,7 +345,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
      * @expectedExceptionMessage [Syntax Error] line 0, col 33: Error: Expected CrEOF\WKT\Lexer::T_CLOSE_PARENTHESIS, got "(" in value "POLYGON((0 0,10 0,10 10,0 10,0 0)(5 5,7 5,7 7,5 7,5 5))"
      */
-    public function testParsingMultiRingPolygonValueMissingComma()
+    public function testParsingPolygonValueMultiRingMissingComma()
     {
         $value  = 'POLYGON((0 0,10 0,10 10,0 10,0 0)(5 5,7 5,7 7,5 7,5 5))';
         $parser = new Parser($value);
