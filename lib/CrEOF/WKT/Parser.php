@@ -282,21 +282,13 @@ class Parser
      * Create exception with descriptive error message
      *
      * @param string $expected
-     * @param array  $token
      *
      * @return UnexpectedValueException
      */
-    private function syntaxError($expected = null, $token = null)
+    private function syntaxError($expected)
     {
-        if (null === $expected) {
-            $expected = 'Unexpected';
-        } else {
-            $expected = sprintf('Expected %s, got', $expected);
-        }
-
-        if (null === $token) {
-            $token = $this->lexer->lookahead;
-        }
+        $expected = sprintf('Expected %s, got', $expected);
+        $token    = $this->lexer->lookahead;
 
         if (null === $this->lexer->lookahead) {
             $found = 'end of string.';
