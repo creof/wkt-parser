@@ -35,6 +35,18 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 0: Error: Expected CrEOF\WKT\Lexer::T_TYPE, got "@" in value "@#_$%"
+     */
+    public function testParsingGarbage()
+    {
+        $value  = '@#_$%';
+        $parser = new Parser($value);
+
+        $parser->parse();
+    }
+
+    /**
+     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
      * @expectedExceptionMessage [Syntax Error] line 0, col 0: Error: Expected CrEOF\WKT\Lexer::T_TYPE, got "PNT" in value "PNT(10 10)"
      */
     public function testParsingBadType()
