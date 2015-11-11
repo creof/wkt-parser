@@ -26,32 +26,60 @@ namespace CrEOF\WKT\Tests;
 use CrEOF\WKT\Parser;
 
 /**
- * Basic parser tests
+ * MULTIPOINT parser tests
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license http://dlambert.mit-license.org MIT
  */
-class ParserTest extends \PHPUnit_Framework_TestCase
+class MultiPointParserTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 0: Error: Expected CrEOF\WKT\Lexer::T_TYPE, got "@" in value "@#_$%"
-     */
-    public function testParsingGarbage()
+    public function testParsingMultiPointValue()
     {
-        $value  = '@#_$%';
-        $parser = new Parser($value);
+        $value    = 'MULTIPOINT(0 0,10 0,10 10,0 10)';
+        $parser   = new Parser($value);
+        $expected = array(
+            'srid'  => null,
+            'type'  => 'MULTIPOINT',
+            'value' => array(
+                array(0, 0),
+                array(10, 0),
+                array(10, 10),
+                array(0, 10)
+            )
+        );
 
-        $parser->parse();
+        $actual = $parser->parse();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testParsingMultiPointValueWithSrid()
+    {
+        $value    = 'SRID=4326;MULTIPOINT(0 0,10 0,10 10,0 10)';
+        $parser   = new Parser($value);
+        $expected = array(
+            'srid'  => 4326,
+            'type'  => 'MULTIPOINT',
+            'value' => array(
+                array(0, 0),
+                array(10, 0),
+                array(10, 10),
+                array(0, 10)
+            )
+        );
+
+        $actual = $parser->parse();
+
+        $this->assertEquals($expected, $actual);
     }
 
     /**
      * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 0: Error: Expected CrEOF\WKT\Lexer::T_TYPE, got "PNT" in value "PNT(10 10)"
+     * @expectedExceptionMessage [Syntax Error] line 0, col 11: Error: Expected CrEOF\WKT\Lexer::T_INTEGER, got "(" in value "MULTIPOINT((0 0,10 0,10 10,0 10))"
      */
-    public function testParsingBadType()
+    public function testParsingMultiPointValueWithExtraParenthesis()
     {
-        $value  = 'PNT(10 10)';
+        $value  = 'MULTIPOINT((0 0,10 0,10 10,0 10))';
         $parser = new Parser($value);
 
         $parser->parse();
