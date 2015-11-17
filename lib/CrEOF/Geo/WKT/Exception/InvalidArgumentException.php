@@ -21,15 +21,15 @@
  * SOFTWARE.
  */
 
-namespace CrEOF\WKT\Exception;
+namespace CrEOF\Geo\WKT\Exception;
 
 /**
- * Exception interface for library exceptions
+ * InvalidArgumentException
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license http://dlambert.mit-license.org MIT
  */
-interface ExceptionInterface
+class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
 
 }

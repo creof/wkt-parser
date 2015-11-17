@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-namespace CrEOF\WKT\Tests;
+namespace CrEOF\Geo\WKT\Tests;
 
-use CrEOF\WKT\Parser;
+use CrEOF\Geo\WKT\Parser;
 
 /**
  * POLYGON parser tests
@@ -81,8 +81,8 @@ class PolygonParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 8: Error: Expected CrEOF\WKT\Lexer::T_OPEN_PARENTHESIS, got "0" in value "POLYGON(0 0,10 0,10 10,0 10,0 0)"
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 8: Error: Expected CrEOF\Geo\WKT\Lexer::T_OPEN_PARENTHESIS, got "0" in value "POLYGON(0 0,10 0,10 10,0 10,0 0)"
      */
     public function testParsingPolygonValueMissingParenthesis()
     {
@@ -153,8 +153,8 @@ class PolygonParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 33: Error: Expected CrEOF\WKT\Lexer::T_CLOSE_PARENTHESIS, got "(" in value "POLYGON((0 0,10 0,10 10,0 10,0 0)(5 5,7 5,7 7,5 7,5 5))"
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 33: Error: Expected CrEOF\Geo\WKT\Lexer::T_CLOSE_PARENTHESIS, got "(" in value "POLYGON((0 0,10 0,10 10,0 10,0 0)(5 5,7 5,7 7,5 7,5 5))"
      */
     public function testParsingPolygonValueMultiRingMissingComma()
     {

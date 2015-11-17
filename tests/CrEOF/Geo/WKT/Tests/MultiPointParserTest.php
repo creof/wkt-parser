@@ -21,28 +21,30 @@
  * SOFTWARE.
  */
 
-namespace CrEOF\WKT\Tests;
+namespace CrEOF\Geo\WKT\Tests;
 
-use CrEOF\WKT\Parser;
+use CrEOF\Geo\WKT\Parser;
 
 /**
- * LINESTRING parser tests
+ * MULTIPOINT parser tests
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license http://dlambert.mit-license.org MIT
  */
-class LineStringParserTest extends \PHPUnit_Framework_TestCase
+class MultiPointParserTest extends \PHPUnit_Framework_TestCase
 {
-    public function testParsingLineStringValue()
+    public function testParsingMultiPointValue()
     {
-        $value    = 'LINESTRING(34.23 -87, 45.3 -92)';
+        $value    = 'MULTIPOINT(0 0,10 0,10 10,0 10)';
         $parser   = new Parser($value);
         $expected = array(
             'srid'  => null,
-            'type'  => 'LINESTRING',
+            'type'  => 'MULTIPOINT',
             'value' => array(
-                array(34.23, -87),
-                array(45.3, -92)
+                array(0, 0),
+                array(10, 0),
+                array(10, 10),
+                array(0, 10)
             )
         );
 
@@ -51,16 +53,18 @@ class LineStringParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testParsingLineStringValueWithSrid()
+    public function testParsingMultiPointValueWithSrid()
     {
-        $value    = 'SRID=4326;LINESTRING(34.23 -87, 45.3 -92)';
+        $value    = 'SRID=4326;MULTIPOINT(0 0,10 0,10 10,0 10)';
         $parser   = new Parser($value);
         $expected = array(
             'srid'  => 4326,
-            'type'  => 'LINESTRING',
+            'type'  => 'MULTIPOINT',
             'value' => array(
-                array(34.23, -87),
-                array(45.3, -92)
+                array(0, 0),
+                array(10, 0),
+                array(10, 10),
+                array(0, 10)
             )
         );
 
@@ -70,24 +74,12 @@ class LineStringParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 21: Error: Expected CrEOF\WKT\Lexer::T_CLOSE_PARENTHESIS, got "45.3" in value "LINESTRING(34.23 -87 45.3 -92)"
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 11: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got "(" in value "MULTIPOINT((0 0,10 0,10 10,0 10))"
      */
-    public function testParsingLineStringValueMissingComma()
+    public function testParsingMultiPointValueWithExtraParenthesis()
     {
-        $value  = 'LINESTRING(34.23 -87 45.3 -92)';
-        $parser = new Parser($value);
-
-        $parser->parse();
-    }
-
-    /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 26: Error: Expected CrEOF\WKT\Lexer::T_INTEGER, got ")" in value "LINESTRING(34.23 -87, 45.3)"
-     */
-    public function testParsingLineStringValueMissingCoordinate()
-    {
-        $value  = 'LINESTRING(34.23 -87, 45.3)';
+        $value  = 'MULTIPOINT((0 0,10 0,10 10,0 10))';
         $parser = new Parser($value);
 
         $parser->parse();

@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-namespace CrEOF\WKT\Tests;
+namespace CrEOF\Geo\WKT\Tests;
 
-use CrEOF\WKT\Parser;
+use CrEOF\Geo\WKT\Parser;
 
 /**
  * MULTILINESTRING parser tests
@@ -90,8 +90,8 @@ class MultiLineStringParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 37: Error: Expected CrEOF\WKT\Lexer::T_CLOSE_PARENTHESIS, got "(" in value "MULTILINESTRING((0 0,10 0,10 10,0 10)(5 5,7 5,7 7,5 7))"
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 37: Error: Expected CrEOF\Geo\WKT\Lexer::T_CLOSE_PARENTHESIS, got "(" in value "MULTILINESTRING((0 0,10 0,10 10,0 10)(5 5,7 5,7 7,5 7))"
      */
     public function testParsingMultiLineStringValueMissingComma()
     {

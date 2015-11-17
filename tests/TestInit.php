@@ -5,5 +5,5 @@ require __DIR__ . '/../vendor/autoload.php';
 error_reporting(E_ALL | E_STRICT);
 
 $loader = new \Composer\Autoload\ClassLoader();
-$loader->add('CrEOF\WKT\Tests', __DIR__);
+$loader->add('CrEOF\Geo\WKT\Tests', __DIR__);
 $loader->register();

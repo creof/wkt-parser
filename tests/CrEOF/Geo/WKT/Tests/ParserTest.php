@@ -21,15 +21,39 @@
  * SOFTWARE.
  */
 
-namespace CrEOF\WKT\Exception;
+namespace CrEOF\Geo\WKT\Tests;
+
+use CrEOF\Geo\WKT\Parser;
 
 /**
- * RangeException
+ * Basic parser tests
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license http://dlambert.mit-license.org MIT
  */
-class RangeException extends \RangeException implements ExceptionInterface
+class ParserTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 0: Error: Expected CrEOF\Geo\WKT\Lexer::T_TYPE, got "@" in value "@#_$%"
+     */
+    public function testParsingGarbage()
+    {
+        $value  = '@#_$%';
+        $parser = new Parser($value);
 
+        $parser->parse();
+    }
+
+    /**
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 0: Error: Expected CrEOF\Geo\WKT\Lexer::T_TYPE, got "PNT" in value "PNT(10 10)"
+     */
+    public function testParsingBadType()
+    {
+        $value  = 'PNT(10 10)';
+        $parser = new Parser($value);
+
+        $parser->parse();
+    }
 }

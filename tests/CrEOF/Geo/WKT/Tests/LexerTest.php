@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-namespace CrEOF\WKT\Tests;
+namespace CrEOF\Geo\WKT\Tests;
 
-use CrEOF\WKT\Lexer;
+use CrEOF\Geo\WKT\Lexer;
 
 /**
  * Lexer tests
