@@ -6,10 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 
-## [2.0.0] 2015-11-18
+## [2.0.0] - 2015-11-18
 ### Added
 - Change base namespace to CrEOF\Geo\WKT to avoid class collision with other CrEOF packages.
 
-## [1.0.0] 2015-11-11
+## [1.0.0] - 2015-11-11
 ### Added
 - Initial release.
