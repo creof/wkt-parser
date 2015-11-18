@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-namespace CrEOF\WKT\Tests;
+namespace CrEOF\Geo\WKT\Tests;
 
-use CrEOF\WKT\Parser;
+use CrEOF\Geo\WKT\Parser;
 
 /**
  * GEOMETRYCOLLECTION Parser tests
@@ -96,8 +96,8 @@ class GeometryCollectionParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 19: Error: Expected CrEOF\WKT\Lexer::T_TYPE, got "PNT" in value "GEOMETRYCOLLECTION(PNT(10 10), POINT(30 30), LINESTRING(15 15, 20 20))"
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 19: Error: Expected CrEOF\Geo\WKT\Lexer::T_TYPE, got "PNT" in value "GEOMETRYCOLLECTION(PNT(10 10), POINT(30 30), LINESTRING(15 15, 20 20))"
      */
     public function testParsingGeometryCollectionValueWithBadType()
     {

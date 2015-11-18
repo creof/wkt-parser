@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-namespace CrEOF\WKT\Tests;
+namespace CrEOF\Geo\WKT\Tests;
 
-use CrEOF\WKT\Parser;
+use CrEOF\Geo\WKT\Parser;
 
 /**
  * POINT parser tests
@@ -64,8 +64,8 @@ class PointParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 5: Error: Expected CrEOF\WKT\Lexer::T_INTEGER, got "432.6" in value "SRID=432.6;POINT(34.23 -87)"
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 5: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got "432.6" in value "SRID=432.6;POINT(34.23 -87)"
      */
     public function testParsingPointValueWithBadSrid()
     {
@@ -76,8 +76,8 @@ class PointParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 11: Error: Expected CrEOF\WKT\Lexer::T_INTEGER, got ")" in value "POINT(34.23)"
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 11: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got ")" in value "POINT(34.23)"
      */
     public function testParsingPointValueMissingCoordinate()
     {
@@ -88,8 +88,8 @@ class PointParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col -1: Error: Expected CrEOF\WKT\Lexer::T_INTEGER, got end of string. in value "POINT(34.23"
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col -1: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got end of string. in value "POINT(34.23"
      */
     public function testParsingPointValueShortString()
     {
@@ -115,8 +115,8 @@ class PointParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 20: Error: Expected CrEOF\WKT\Lexer::T_INTEGER, got "test" in value "SRID=4326;POINT(4.23test-005 -8e-003)"
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 20: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got "test" in value "SRID=4326;POINT(4.23test-005 -8e-003)"
      */
     public function testParsingPointValueWrongScientificWithSrid()
     {
@@ -128,8 +128,8 @@ class PointParserTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @expectedException        \CrEOF\WKT\Exception\UnexpectedValueException
-     * @expectedExceptionMessage [Syntax Error] line 0, col 8: Error: Expected CrEOF\WKT\Lexer::T_INTEGER, got "," in value "POINT(10, 10)"
+     * @expectedException        \CrEOF\Geo\WKT\Exception\UnexpectedValueException
+     * @expectedExceptionMessage [Syntax Error] line 0, col 8: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got "," in value "POINT(10, 10)"
      */
     public function testParsingPointValueWithComma()
     {

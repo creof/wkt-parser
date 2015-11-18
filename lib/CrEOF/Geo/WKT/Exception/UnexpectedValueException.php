@@ -21,15 +21,15 @@
  * SOFTWARE.
  */
 
-namespace CrEOF\WKT\Exception;
+namespace CrEOF\Geo\WKT\Exception;
 
 /**
- * InvalidArgumentException
+ * UnexpectedValueException
  *
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license http://dlambert.mit-license.org MIT
  */
-class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
+class UnexpectedValueException extends \UnexpectedValueException implements ExceptionInterface
 {
 
 }
