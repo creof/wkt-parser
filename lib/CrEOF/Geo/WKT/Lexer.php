@@ -125,8 +125,9 @@ class Lexer extends AbstractLexer
     protected function getCatchablePatterns()
     {
         return array(
-            '[a-z]*',
-            '(?:[+-]?[0-9]+)(?:[\.][0-9]+)?'
+            '',
+            'zm|[a-z]+[a-ln-z]',
+            '[+-]?[0-9]+(?:[\.][0-9]+)?'
         );
     }
 
