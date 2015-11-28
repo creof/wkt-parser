@@ -46,16 +46,27 @@ class Lexer extends AbstractLexer
     const T_MINUS              = 14;
     const T_SEMICOLON          = 50;
     const T_SRID               = 500;
+    const T_ZM                 = 501;
+    const T_Z                  = 502;
+    const T_M                  = 503;
 
     // Geometry types > 600
-    const T_TYPE               = 600;
-    const T_POINT              = 601;
-    const T_LINESTRING         = 602;
-    const T_POLYGON            = 603;
-    const T_MULTIPOINT         = 604;
-    const T_MULTILINESTRING    = 605;
-    const T_MULTIPOLYGON       = 606;
-    const T_GEOMETRYCOLLECTION = 607;
+    const T_TYPE                = 600;
+    const T_POINT               = 601;
+    const T_LINESTRING          = 602;
+    const T_POLYGON             = 603;
+    const T_MULTIPOINT          = 604;
+    const T_MULTILINESTRING     = 605;
+    const T_MULTIPOLYGON        = 606;
+    const T_GEOMETRYCOLLECTION  = 607;
+    const T_CIRCULARSTRING      = 608;
+    const T_COMPOUNDCURVE       = 609;
+    const T_CURVEPOLYGON        = 610;
+    const T_MULTICURVE          = 611;
+    const T_MULTISURFACE        = 612;
+    const T_POLYHEDRALSURFACE   = 615;
+    const T_TIN                 = 616;
+    const T_TRIANGLE            = 617;
 
     /**
      * @param string $input a query string
