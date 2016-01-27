@@ -33,266 +33,228 @@ use CrEOF\Geo\WKT\Lexer;
  */
 class LexerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testScannerRecognizesPointType()
+
+    /**
+     * @return array
+     */
+    public function tokenData()
     {
-        $lexer = new Lexer('POINT');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_POINT, $token['type']);
-        $this->assertEquals('POINT', $token['value']);
-    }
-
-    public function testScannerRecognizesLineStringType()
-    {
-        $lexer = new Lexer('LINESTRING');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_LINESTRING, $token['type']);
-        $this->assertEquals('LINESTRING', $token['value']);
-    }
-
-    public function testScannerRecognizesPolygonType()
-    {
-        $lexer = new Lexer('POLYGON');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_POLYGON, $token['type']);
-        $this->assertEquals('POLYGON', $token['value']);
-    }
-
-    public function testScannerRecognizesMultiPointType()
-    {
-        $lexer = new Lexer('MULTIPOINT');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_MULTIPOINT, $token['type']);
-        $this->assertEquals('MULTIPOINT', $token['value']);
-    }
-
-    public function testScannerRecognizesMultiLineStringType()
-    {
-        $lexer = new Lexer('MULTILINESTRING');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_MULTILINESTRING, $token['type']);
-        $this->assertEquals('MULTILINESTRING', $token['value']);
-    }
-
-    public function testScannerRecognizesMultiPolygonType()
-    {
-        $lexer = new Lexer('MULTIPOLYGON');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_MULTIPOLYGON, $token['type']);
-        $this->assertEquals('MULTIPOLYGON', $token['value']);
-    }
-
-    public function testScannerRecognizesGeometryCollectionType()
-    {
-        $lexer = new Lexer('GEOMETRYCOLLECTION');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_GEOMETRYCOLLECTION, $token['type']);
-        $this->assertEquals('GEOMETRYCOLLECTION', $token['value']);
-    }
-
-    public function testScannerRecognizesPositiveInteger()
-    {
-        $lexer = new Lexer('35');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_INTEGER, $token['type']);
-        $this->assertEquals(35, $token['value']);
-    }
-
-    public function testScannerRecognizesNegativeInteger()
-    {
-        $lexer = new Lexer('-25');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_INTEGER, $token['type']);
-        $this->assertEquals(-25, $token['value']);
-    }
-
-    public function testScannerRecognizesPositiveFloat()
-    {
-        $lexer = new Lexer('35.635');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_FLOAT, $token['type']);
-        $this->assertEquals(35.635, $token['value']);
-    }
-
-    public function testScannerRecognizesNegativeFloat()
-    {
-        $lexer = new Lexer('-120.33');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_FLOAT, $token['type']);
-        $this->assertEquals(-120.33, $token['value']);
-    }
-
-    public function testScannerRecognizesSrid()
-    {
-        $lexer = new Lexer('SRID');
-
-        $lexer->moveNext();
-
-        $token = $lexer->lookahead;
-
-        $this->assertEquals(Lexer::T_SRID, $token['type']);
-        $this->assertEquals('SRID', $token['value']);
-    }
-
-    public function testScannerTokenizesGeometryValueCorrectly()
-    {
-        $value  = 'SRID=4326;LINESTRING(0 0.0, 10.1 -10.025, 20.5 25.9, 53E-003 60)';
-        $tokens = array(
-            array(
-                'value'    => 'SRID',
-                'type'     => Lexer::T_SRID,
-                'position' => 0
+        return array(
+            'POINT' => array(
+                'value' => 'POINT',
+                'expected' => array(
+                    array(Lexer::T_POINT, 'POINT', 0)
+                )
             ),
-            array(
-                'value'    => '=',
-                'type'     => Lexer::T_EQUALS,
-                'position' => 4
+            'POINTM' => array(
+                'value' => 'POINTM',
+                'expected' => array(
+                    array(Lexer::T_POINT, 'POINT', 0),
+                    array(Lexer::T_M, 'M', 5)
+                )
             ),
-            array(
-                'value'    => '4326',
-                'type'     => Lexer::T_INTEGER,
-                'position' => 5
+            'POINT M' => array(
+                'value' => 'POINTM',
+                'expected' => array(
+                    array(Lexer::T_POINT, 'POINT', 0),
+                    array(Lexer::T_M, 'M', 5)
+                )
             ),
-            array(
-                'value'    => ';',
-                'type'     => Lexer::T_SEMICOLON,
-                'position' => 9
+            'POINT Z' => array(
+                'value' => 'POINT Z',
+                'expected' => array(
+                    array(Lexer::T_POINT, 'POINT', 0),
+                    array(Lexer::T_Z, 'Z', 6)
+                )
             ),
-            array(
-                'value'    => 'LINESTRING',
-                'type'     => Lexer::T_LINESTRING,
-                'position' => 10
+            'POINT ZM' => array(
+                'value' => 'POINT ZM',
+                'expected' => array(
+                    array(Lexer::T_POINT, 'POINT', 0),
+                    array(Lexer::T_ZM, 'ZM', 6)
+                )
             ),
-            array(
-                'value'    => '(',
-                'type'     => Lexer::T_OPEN_PARENTHESIS,
-                'position' => 20
+            'POINTZM' => array(
+                'value' => 'POINTZM',
+                'expected' => array(
+                    array(Lexer::T_STRING, 'POINTZ', 0),
+                    array(Lexer::T_M, 'M', 6)
+                )
             ),
-            array(
-                'value'    => 0,
-                'type'     => Lexer::T_INTEGER,
-                'position' => 21
+            'LINESTRING' => array(
+                'value' => 'LINESTRING',
+                'expected' => array(
+                    array(Lexer::T_LINESTRING, 'LINESTRING', 0)
+                )
             ),
-            array(
-                'value'    => 0,
-                'type'     => Lexer::T_FLOAT,
-                'position' => 23
+            'LINESTRINGM' => array(
+                'value' => 'LINESTRINGM',
+                'expected' => array(
+                    array(Lexer::T_LINESTRING, 'LINESTRING', 0),
+                    array(Lexer::T_M, 'M', 10)
+                )
             ),
-            array(
-                'value'    => ',',
-                'type'     => Lexer::T_COMMA,
-                'position' => 26
+            'POLYGON' => array(
+                'value' => 'POLYGON',
+                'expected' => array(
+                    array(Lexer::T_POLYGON, 'POLYGON', 0)
+                )
             ),
-            array(
-                'value'    => 10.1,
-                'type'     => Lexer::T_FLOAT,
-                'position' => 28
+            'POLYGONM' => array(
+                'value' => 'POLYGONM',
+                'expected' => array(
+                    array(Lexer::T_POLYGON, 'POLYGON', 0),
+                    array(Lexer::T_M, 'M', 7)
+                )
             ),
-            array(
-                'value'    => -10.025,
-                'type'     => Lexer::T_FLOAT,
-                'position' => 33
+            'MULTIPOINT' => array(
+                'value' => 'MULTIPOINT',
+                'expected' => array(
+                    array(Lexer::T_MULTIPOINT, 'MULTIPOINT', 0)
+                )
             ),
-            array(
-                'value'    => ',',
-                'type'     => Lexer::T_COMMA,
-                'position' => 40
+            'MULTIPOINTM' => array(
+                'value' => 'MULTIPOINTM',
+                'expected' => array(
+                    array(Lexer::T_MULTIPOINT, 'MULTIPOINT', 0),
+                    array(Lexer::T_M, 'M', 10)
+                )
             ),
-            array(
-                'value'    => 20.5,
-                'type'     => Lexer::T_FLOAT,
-                'position' => 42
+            'MULTILINESTRING' => array(
+                'value' => 'MULTILINESTRING',
+                'expected' => array(
+                    array(Lexer::T_MULTILINESTRING, 'MULTILINESTRING', 0)
+                )
             ),
-            array(
-                'value'    => 25.9,
-                'type'     => Lexer::T_FLOAT,
-                'position' => 47
+            'MULTILINESTRINGM' => array(
+                'value' => 'MULTILINESTRINGM',
+                'expected' => array(
+                    array(Lexer::T_MULTILINESTRING, 'MULTILINESTRING', 0),
+                    array(Lexer::T_M, 'M', 15)
+                )
             ),
-            array(
-                'value'    => ',',
-                'type'     => Lexer::T_COMMA,
-                'position' => 51
+            'MULTIPOLYGON' => array(
+                'value' => 'MULTIPOLYGON',
+                'expected' => array(
+                    array(Lexer::T_MULTIPOLYGON, 'MULTIPOLYGON', 0)
+                )
             ),
-            array(
-                'value'    => 53,
-                'type'     => Lexer::T_INTEGER,
-                'position' => 53
+            'MULTIPOLYGONM' => array(
+                'value' => 'MULTIPOLYGONM',
+                'expected' => array(
+                    array(Lexer::T_MULTIPOLYGON, 'MULTIPOLYGON', 0),
+                    array(Lexer::T_M, 'M', 12)
+                )
             ),
-            array(
-                'value'    => 'E',
-                'type'     => Lexer::T_E,
-                'position' => 55
+            'GEOMETRYCOLLECTION' => array(
+                'value' => 'GEOMETRYCOLLECTION',
+                'expected' => array(
+                    array(Lexer::T_GEOMETRYCOLLECTION, 'GEOMETRYCOLLECTION', 0)
+                )
             ),
-            array(
-                'value'    => -3,
-                'type'     => Lexer::T_INTEGER,
-                'position' => 56
+            'GEOMETRYCOLLECTIONM' => array(
+                'value' => 'GEOMETRYCOLLECTIONM',
+                'expected' => array(
+                    array(Lexer::T_GEOMETRYCOLLECTION, 'GEOMETRYCOLLECTION', 0),
+                    array(Lexer::T_M, 'M', 18)
+                )
             ),
-            array(
-                'value'    => 60,
-                'type'     => Lexer::T_INTEGER,
-                'position' => 61
+            'COMPOUNDCURVE' => array(
+                'value' => 'COMPOUNDCURVE',
+                'expected' => array(
+                    array(Lexer::T_COMPOUNDCURVE, 'COMPOUNDCURVE', 0)
+                )
             ),
-            array(
-                'value'    => ')',
-                'type'     => Lexer::T_CLOSE_PARENTHESIS,
-                'position' => 63
+            'COMPOUNDCURVEM' => array(
+                'value' => 'COMPOUNDCURVEM',
+                'expected' => array(
+                    array(Lexer::T_COMPOUNDCURVE, 'COMPOUNDCURVE', 0),
+                    array(Lexer::T_M, 'M', 13)
+                )
+            ),
+            'CIRCULARSTRING' => array(
+                'value' => 'CIRCULARSTRING',
+                'expected' => array(
+                    array(Lexer::T_CIRCULARSTRING, 'CIRCULARSTRING', 0)
+                )
+            ),
+            'CIRCULARSTRINGM' => array(
+                'value' => 'CIRCULARSTRINGM',
+                'expected' => array(
+                    array(Lexer::T_CIRCULARSTRING, 'CIRCULARSTRING', 0),
+                    array(Lexer::T_M, 'M', 14)
+                )
+            ),
+            '35' => array(
+                'value' => '35',
+                'expected' => array(
+                    array(Lexer::T_INTEGER, 35, 0)
+                )
+            ),
+            '-25' => array(
+                'value' => '-25',
+                'expected' => array(
+                    array(Lexer::T_INTEGER, -25, 0)
+                )
+            ),
+            '-120.33' => array(
+                'value' => '-120.33',
+                'expected' => array(
+                    array(Lexer::T_FLOAT, -120.33, 0)
+                )
+            ),
+            'SRID' => array(
+                'value' => 'SRID',
+                'expected' => array(
+                    array(Lexer::T_SRID, 'SRID', 0)
+                )
+            ),
+            'SRID=4326;LINESTRING(0 0.0, 10.1 -10.025, 20.5 25.9, 53E-003 60)' => array(
+                'value' => 'SRID=4326;LINESTRING(0 0.0, 10.1 -10.025, 20.5 25.9, 53E-003 60)',
+                'expected' => array(
+                    array(Lexer::T_SRID, 'SRID', 0),
+                    array(Lexer::T_EQUALS, '=', 4),
+                    array(Lexer::T_INTEGER, 4326, 5),
+                    array(Lexer::T_SEMICOLON, ';', 9),
+                    array(Lexer::T_LINESTRING, 'LINESTRING', 10),
+                    array(Lexer::T_OPEN_PARENTHESIS, '(', 20),
+                    array(Lexer::T_INTEGER, 0, 21),
+                    array(Lexer::T_FLOAT, 0, 23),
+                    array(Lexer::T_COMMA, ',', 26),
+                    array(Lexer::T_FLOAT, 10.1, 28),
+                    array(Lexer::T_FLOAT, -10.025, 33),
+                    array(Lexer::T_COMMA, ',', 40),
+                    array(Lexer::T_FLOAT, 20.5, 42),
+                    array(Lexer::T_FLOAT, 25.9, 47),
+                    array(Lexer::T_COMMA, ',', 51),
+                    array(Lexer::T_INTEGER, 53, 53),
+                    array(Lexer::T_E, 'E', 55),
+                    array(Lexer::T_INTEGER, -3, 56),
+                    array(Lexer::T_INTEGER, 60, 61),
+                    array(Lexer::T_CLOSE_PARENTHESIS, ')', 63)
+                )
             )
         );
+    }
 
+    /**
+     * @param       $value
+     * @param array $expected
+     *
+     * @dataProvider tokenData
+     */
+    public function testTokenRecognition($value, array $expected)
+    {
         $lexer = new Lexer($value);
 
-        foreach ($tokens as $expected) {
+        foreach ($expected as $token) {
             $lexer->moveNext();
 
             $actual = $lexer->lookahead;
 
-            $this->assertEquals($expected, $actual);
+            $this->assertEquals($token[0], $actual['type']);
+            $this->assertEquals($token[1], $actual['value']);
+            $this->assertEquals($token[2], $actual['position']);
         }
-
-        $this->assertFalse($lexer->moveNext());
     }
 }
