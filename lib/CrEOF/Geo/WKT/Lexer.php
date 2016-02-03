@@ -64,6 +64,8 @@ class Lexer extends AbstractLexer
     const T_CURVEPOLYGON        = 610;
     const T_MULTICURVE          = 611;
     const T_MULTISURFACE        = 612;
+    const T_CURVE               = 613;
+    const T_SURFACE             = 614;
     const T_POLYHEDRALSURFACE   = 615;
     const T_TIN                 = 616;
     const T_TRIANGLE            = 617;
