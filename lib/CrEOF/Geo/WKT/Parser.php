@@ -51,25 +51,34 @@ class Parser
     /**
      * @var Lexer
      */
-    private $lexer;
+    private static $lexer;
 
     /**
      * @param string $input
      */
-    public function __construct($input)
+    public function __construct($input = null)
     {
-        $this->input = $input;
-        $this->lexer = new Lexer($input);
+        self::$lexer = new Lexer();
+
+        if (null !== $input) {
+            $this->input = $input;
+        }
     }
 
     /**
      * @return array
      */
-    public function parse()
+    public function parse($input = null)
     {
-        $this->lexer->moveNext();
+        if (null !== $input) {
+            $this->input = $input;
+        }
 
-        if ($this->lexer->lookahead['type'] == Lexer::T_SRID) {
+        self::$lexer->setInput($this->input);
+
+        self::$lexer->moveNext();
+
+        if (self::$lexer->lookahead['type'] == Lexer::T_SRID) {
             $this->srid = $this->srid();
         }
 
@@ -90,7 +99,7 @@ class Parser
         $this->match(Lexer::T_EQUALS);
         $this->match(Lexer::T_INTEGER);
 
-        $srid = $this->lexer->token['value'];
+        $srid = self::$lexer->token['value'];
 
         $this->match(Lexer::T_SEMICOLON);
 
@@ -106,7 +115,7 @@ class Parser
     {
         $this->match(Lexer::T_TYPE);
 
-        return $this->lexer->token['value'];
+        return self::$lexer->token['value'];
     }
 
     /**
@@ -129,18 +138,18 @@ class Parser
      */
     protected function coordinate()
     {
-        $this->match(($this->lexer->isNextToken(Lexer::T_FLOAT) ? Lexer::T_FLOAT : Lexer::T_INTEGER));
+        $this->match((self::$lexer->isNextToken(Lexer::T_FLOAT) ? Lexer::T_FLOAT : Lexer::T_INTEGER));
 
-        if (! $this->lexer->isNextToken(Lexer::T_E)) {
-            return $this->lexer->token['value'];
+        if (! self::$lexer->isNextToken(Lexer::T_E)) {
+            return self::$lexer->token['value'];
         }
 
-        $number = $this->lexer->token['value'];
+        $number = self::$lexer->token['value'];
 
         $this->match(Lexer::T_E);
         $this->match(Lexer::T_INTEGER);
 
-        return $number * pow(10, $this->lexer->token['value']);
+        return $number * pow(10, self::$lexer->token['value']);
     }
 
     /**
@@ -172,7 +181,7 @@ class Parser
     {
         $points = array($this->point());
 
-        while ($this->lexer->isNextToken(Lexer::T_COMMA)) {
+        while (self::$lexer->isNextToken(Lexer::T_COMMA)) {
             $this->match(Lexer::T_COMMA);
 
             $points[] = $this->point();
@@ -194,7 +203,7 @@ class Parser
 
         $this->match(Lexer::T_CLOSE_PARENTHESIS);
 
-        while ($this->lexer->isNextToken(Lexer::T_COMMA)) {
+        while (self::$lexer->isNextToken(Lexer::T_COMMA)) {
             $this->match(Lexer::T_COMMA);
             $this->match(Lexer::T_OPEN_PARENTHESIS);
 
@@ -219,7 +228,7 @@ class Parser
 
         $this->match(Lexer::T_CLOSE_PARENTHESIS);
 
-        while ($this->lexer->isNextToken(Lexer::T_COMMA)) {
+        while (self::$lexer->isNextToken(Lexer::T_COMMA)) {
             $this->match(Lexer::T_COMMA);
             $this->match(Lexer::T_OPEN_PARENTHESIS);
 
@@ -281,7 +290,7 @@ class Parser
     {
         $collection = array($this->geometry());
 
-        while ($this->lexer->isNextToken(Lexer::T_COMMA)) {
+        while (self::$lexer->isNextToken(Lexer::T_COMMA)) {
             $this->match(Lexer::T_COMMA);
 
             $collection[] = $this->geometry();
@@ -297,13 +306,13 @@ class Parser
      */
     protected function match($token)
     {
-        $lookaheadType = $this->lexer->lookahead['type'];
+        $lookaheadType = self::$lexer->lookahead['type'];
 
         if ($lookaheadType !== $token && ($token !== Lexer::T_TYPE || $lookaheadType <= Lexer::T_TYPE)) {
-            throw $this->syntaxError($this->lexer->getLiteral($token));
+            throw $this->syntaxError(self::$lexer->getLiteral($token));
         }
 
-        $this->lexer->moveNext();
+        self::$lexer->moveNext();
     }
 
     /**
@@ -316,8 +325,8 @@ class Parser
     private function syntaxError($expected)
     {
         $expected = sprintf('Expected %s, got', $expected);
-        $token    = $this->lexer->lookahead;
-        $found    = null === $this->lexer->lookahead ? 'end of string.' : sprintf('"%s"', $token['value']);
+        $token    = self::$lexer->lookahead;
+        $found    = null === self::$lexer->lookahead ? 'end of string.' : sprintf('"%s"', $token['value']);
         $message  = sprintf(
             '[Syntax Error] line 0, col %d: Error: %s %s in value "%s"',
             isset($token['position']) ? $token['position'] : '-1',
