@@ -73,9 +73,11 @@ class Lexer extends AbstractLexer
     /**
      * @param string $input a query string
      */
-    public function __construct($input)
+    public function __construct($input = null)
     {
-        $this->setInput($input);
+        if (null !== $input) {
+            $this->setInput($input);
+        }
     }
 
     /**
