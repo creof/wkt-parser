@@ -81,6 +81,14 @@ class Lexer extends AbstractLexer
     }
 
     /**
+     * @return mixed
+     */
+    public function value()
+    {
+        return $this->token['value'];
+    }
+
+    /**
      * @param string $value
      *
      * @return int
