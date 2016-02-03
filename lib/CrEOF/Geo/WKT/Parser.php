@@ -36,7 +36,7 @@ class Parser
     /**
      * @var string
      */
-    protected $type;
+    private $type;
 
     /**
      * @var string
@@ -75,10 +75,9 @@ class Parser
         }
 
         self::$lexer->setInput($this->input);
-
         self::$lexer->moveNext();
 
-        if (self::$lexer->lookahead['type'] == Lexer::T_SRID) {
+        if (self::$lexer->isNextToken(Lexer::T_SRID)) {
             $this->srid = $this->srid();
         }
 
@@ -99,7 +98,7 @@ class Parser
         $this->match(Lexer::T_EQUALS);
         $this->match(Lexer::T_INTEGER);
 
-        $srid = self::$lexer->token['value'];
+        $srid = self::$lexer->value();
 
         $this->match(Lexer::T_SEMICOLON);
 
@@ -115,7 +114,33 @@ class Parser
     {
         $this->match(Lexer::T_TYPE);
 
-        return self::$lexer->token['value'];
+        return self::$lexer->value();
+    }
+
+    /**
+     * Match spatial geometry object
+     *
+     * @return array
+     */
+    protected function geometry()
+    {
+        $type       = $this->type();
+        $this->type = $type;
+
+        if (self::$lexer->isNextTokenAny(array(Lexer::T_Z, Lexer::T_M, Lexer::T_ZM))) {
+            $this->match(self::$lexer->lookahead['type']);
+        }
+
+        $this->match(Lexer::T_OPEN_PARENTHESIS);
+
+        $value = $this->$type();
+
+        $this->match(Lexer::T_CLOSE_PARENTHESIS);
+
+        return array(
+            'type'  => $type,
+            'value' => $value
+        );
     }
 
     /**
@@ -141,15 +166,15 @@ class Parser
         $this->match((self::$lexer->isNextToken(Lexer::T_FLOAT) ? Lexer::T_FLOAT : Lexer::T_INTEGER));
 
         if (! self::$lexer->isNextToken(Lexer::T_E)) {
-            return self::$lexer->token['value'];
+            return self::$lexer->value();
         }
 
-        $number = self::$lexer->token['value'];
+        $number = self::$lexer->value();
 
         $this->match(Lexer::T_E);
         $this->match(Lexer::T_INTEGER);
 
-        return $number * pow(10, self::$lexer->token['value']);
+        return $number * pow(10, self::$lexer->value());
     }
 
     /**
@@ -258,27 +283,6 @@ class Parser
     protected function multiLineString()
     {
         return $this->pointLists();
-    }
-
-    /**
-     * Match spatial geometry object
-     *
-     * @return array
-     */
-    protected function geometry()
-    {
-        $type = $this->type();
-
-        $this->match(Lexer::T_OPEN_PARENTHESIS);
-
-        $value = $this->$type();
-
-        $this->match(Lexer::T_CLOSE_PARENTHESIS);
-
-        return array(
-            'type'  => $type,
-            'value' => $value
-        );
     }
 
     /**
