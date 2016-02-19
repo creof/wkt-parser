@@ -257,4 +257,23 @@ class LexerTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($token[2], $actual['position']);
         }
     }
+
+    public function testTokenRecognitionReuseLexer()
+    {
+        $lexer = new Lexer();
+
+        foreach ($this->tokenData() as $name => $testData) {
+            $lexer->setInput($testData['value']);
+
+            foreach ($testData['expected'] as $token) {
+                $lexer->moveNext();
+
+                $actual = $lexer->lookahead;
+
+                $this->assertEquals($token[0], $actual['type']);
+                $this->assertEquals($token[1], $actual['value']);
+                $this->assertEquals($token[2], $actual['position']);
+            }
+        }
+    }
 }
