@@ -77,6 +77,8 @@ class Parser
         self::$lexer->setInput($this->input);
         self::$lexer->moveNext();
 
+        $this->srid = null;
+
         if (self::$lexer->isNextToken(Lexer::T_SRID)) {
             $this->srid = $this->srid();
         }
