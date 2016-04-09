@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 
-## [2.1.0] - 2016-02-19
+## [2.1.0] - 2016-04-09
 ### Added
 - Add tokens for 3DM, 3DZ, and 4D coordinates to Lexer.
 - Method Lexer::value() to get current token value.
@@ -22,6 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Use Lexer::value() in Parser.
 - Set srid to null before parsing value.
 - Consolidated all Parser test data into ParserTest.
+- Update usage documentation in README.md.
 
 ## [2.0.0] - 2015-11-18
 ### Added
