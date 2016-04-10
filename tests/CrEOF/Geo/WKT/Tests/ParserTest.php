@@ -89,25 +89,73 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'testParsingPointValue' => array(
                 'value'    => 'POINT(34.23 -87)',
                 'expected' => array(
-                    'srid'  => null,
-                    'type'  => 'POINT',
-                    'value' => array(34.23, -87)
+                    'srid'      => null,
+                    'type'      => 'POINT',
+                    'value'     => array(34.23, -87),
+                    'dimension' => null
+                )
+            ),
+            'testParsingPointZValue' => array(
+                'value'    => 'POINT(34.23 -87 10)',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'POINT',
+                    'value'     => array(34.23, -87, 10),
+                    'dimension' => 'Z'
+                )
+            ),
+            'testParsingPointDeclaredZValue' => array(
+                'value'    => 'POINTZ(34.23 -87 10)',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'POINT',
+                    'value'     => array(34.23, -87, 10),
+                    'dimension' => 'Z'
+                )
+            ),
+            'testParsingPointMValue' => array(
+                'value'    => 'POINTM(34.23 -87 10)',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'POINT',
+                    'value'     => array(34.23, -87, 10),
+                    'dimension' => 'M'
+                )
+            ),
+            'testParsingPointZMValue' => array(
+                'value'    => 'POINT(34.23 -87 10 30)',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'POINT',
+                    'value'     => array(34.23, -87, 10, 30),
+                    'dimension' => 'ZM'
+                )
+            ),
+            'testParsingPointDeclaredZMValue' => array(
+                'value'    => 'POINT ZM(34.23 -87 10 30)',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'POINT',
+                    'value'     => array(34.23, -87, 10, 30),
+                    'dimension' => 'ZM'
                 )
             ),
             'testParsingPointValueWithSrid' => array(
                 'value'    => 'SRID=4326;POINT(34.23 -87)',
                 'expected' => array(
-                    'srid'  => 4326,
-                    'type'  => 'POINT',
-                    'value' => array(34.23, -87)
+                    'srid'      => 4326,
+                    'type'      => 'POINT',
+                    'value'     => array(34.23, -87),
+                    'dimension' => null
                 )
             ),
             'testParsingPointValueScientificWithSrid' => array(
                 'value'    => 'SRID=4326;POINT(4.23e-005 -8E-003)',
                 'expected' => array(
-                    'srid'  => 4326,
-                    'type'  => 'POINT',
-                    'value' => array(0.0000423, -0.008)
+                    'srid'      => 4326,
+                    'type'      => 'POINT',
+                    'value'     => array(0.0000423, -0.008),
+                    'dimension' => null
                 )
             ),
             'testParsingPointValueWithBadSrid' => array(
@@ -133,28 +181,26 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'testParsingLineStringValue' => array(
                 'value'    => 'LINESTRING(34.23 -87, 45.3 -92)',
                 'expected' => array(
-                    'srid'  => null,
-                    'type'  => 'LINESTRING',
-                    'value' => array(
+                    'srid'      => null,
+                    'type'      => 'LINESTRING',
+                    'value'     => array(
                         array(34.23, -87),
                         array(45.3, -92)
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingLineStringValueWithSrid' => array(
                 'value'    => 'SRID=4326;LINESTRING(34.23 -87, 45.3 -92)',
                 'expected' => array(
-                    'srid'  => 4326,
-                    'type'  => 'LINESTRING',
-                    'value' => array(
+                    'srid'      => 4326,
+                    'type'      => 'LINESTRING',
+                    'value'     => array(
                         array(34.23, -87),
                         array(45.3, -92)
-                    )
+                    ),
+                    'dimension' => null
                 )
-            ),
-            'testParsingLineStringValueMissingComma' => array(
-                'value'    => 'LINESTRING(34.23 -87 45.3 -92)',
-                'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 21: Error: Expected CrEOF\Geo\WKT\Lexer::T_CLOSE_PARENTHESIS, got "45.3" in value "LINESTRING(34.23 -87 45.3 -92)"')
             ),
             'testParsingLineStringValueMissingCoordinate' => array(
                 'value'    => 'LINESTRING(34.23 -87, 45.3)',
@@ -163,9 +209,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'testParsingPolygonValue' => array(
                 'value'    => 'POLYGON((0 0,10 0,10 10,0 10,0 0))',
                 'expected' => array(
-                    'srid'  => null,
-                    'type'  => 'POLYGON',
-                    'value' => array(
+                    'srid'      => null,
+                    'type'      => 'POLYGON',
+                    'value'     => array(
                         array(
                             array(0, 0),
                             array(10, 0),
@@ -173,15 +219,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                             array(0, 10),
                             array(0, 0)
                         )
-                    )
+                    ) ,
+                    'dimension' => null
                 )
             ),
             'testParsingPolygonValueWithSrid' => array(
                 'value'    => 'SRID=4326;POLYGON((0 0,10 0,10 10,0 10,0 0))',
                 'expected' => array(
-                    'srid'  => 4326,
-                    'type'  => 'POLYGON',
-                    'value' => array(
+                    'srid'      => 4326,
+                    'type'      => 'POLYGON',
+                    'value'     => array(
                         array(
                             array(0, 0),
                             array(10, 0),
@@ -189,15 +236,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                             array(0, 10),
                             array(0, 0)
                         )
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingPolygonValueMultiRing' => array(
                 'value'    => 'POLYGON((0 0,10 0,10 10,0 10,0 0),(5 5,7 5,7 7,5 7,5 5))',
                 'expected' => array(
-                    'srid'  => null,
-                    'type'  => 'POLYGON',
-                    'value' => array(
+                    'srid'      => null,
+                    'type'      => 'POLYGON',
+                    'value'     => array(
                         array(
                             array(0, 0),
                             array(10, 0),
@@ -212,15 +260,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                             array(5, 7),
                             array(5, 5)
                         )
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingPolygonValueMultiRingWithSrid' => array(
                 'value'    => 'SRID=4326;POLYGON((0 0,10 0,10 10,0 10,0 0),(5 5,7 5,7 7,5 7,5 5))',
                 'expected' => array(
-                    'srid'  => 4326,
-                    'type'  => 'POLYGON',
-                    'value' => array(
+                    'srid'      => 4326,
+                    'type'      => 'POLYGON',
+                    'value'     => array(
                         array(
                             array(0, 0),
                             array(10, 0),
@@ -235,7 +284,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                             array(5, 7),
                             array(5, 5)
                         )
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingPolygonValueMissingParenthesis' => array(
@@ -249,27 +299,29 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'testParsingMultiPointValue' => array(
                 'value'    => 'MULTIPOINT(0 0,10 0,10 10,0 10)',
                 'expected' => array(
-                    'srid'  => null,
-                    'type'  => 'MULTIPOINT',
-                    'value' => array(
+                    'srid'      => null,
+                    'type'      => 'MULTIPOINT',
+                    'value'     => array(
                         array(0, 0),
                         array(10, 0),
                         array(10, 10),
                         array(0, 10)
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingMultiPointValueWithSrid' => array(
                 'value'    => 'SRID=4326;MULTIPOINT(0 0,10 0,10 10,0 10)',
                 'expected' => array(
-                    'srid'  => 4326,
-                    'type'  => 'MULTIPOINT',
-                    'value' => array(
+                    'srid'      => 4326,
+                    'type'      => 'MULTIPOINT',
+                    'value'     => array(
                         array(0, 0),
                         array(10, 0),
                         array(10, 10),
                         array(0, 10)
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingMultiPointValueWithExtraParenthesis' => array(
@@ -279,9 +331,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'testParsingMultiLineStringValue' => array(
                 'value'    => 'MULTILINESTRING((0 0,10 0,10 10,0 10),(5 5,7 5,7 7,5 7))',
                 'expected' => array(
-                    'srid'  => null,
-                    'type'  => 'MULTILINESTRING',
-                    'value' => array(
+                    'srid'      => null,
+                    'type'      => 'MULTILINESTRING',
+                    'value'     => array(
                         array(
                             array(0, 0),
                             array(10, 0),
@@ -294,15 +346,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                             array(7, 7),
                             array(5, 7),
                         )
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingMultiLineStringValueWithSrid' => array(
                 'value'    => 'SRID=4326;MULTILINESTRING((0 0,10 0,10 10,0 10),(5 5,7 5,7 7,5 7))',
                 'expected' => array(
-                    'srid'  => 4326,
-                    'type'  => 'MULTILINESTRING',
-                    'value' => array(
+                    'srid'      => 4326,
+                    'type'      => 'MULTILINESTRING',
+                    'value'     => array(
                         array(
                             array(0, 0),
                             array(10, 0),
@@ -315,7 +368,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                             array(7, 7),
                             array(5, 7),
                         )
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingMultiLineStringValueMissingComma' => array(
@@ -325,9 +379,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'testParsingMultiPolygonValue' => array(
                 'value'    => 'MULTIPOLYGON(((0 0,10 0,10 10,0 10,0 0),(5 5,7 5,7 7,5 7,5 5)),((1 1, 3 1, 3 3, 1 3, 1 1)))',
                 'expected' => array(
-                    'srid'  => null,
-                    'type'  => 'MULTIPOLYGON',
-                    'value' => array(
+                    'srid'      => null,
+                    'type'      => 'MULTIPOLYGON',
+                    'value'     => array(
                         array(
                             array(
                                 array(0, 0),
@@ -353,15 +407,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                                 array(1, 1)
                             )
                         )
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingMultiPolygonValueWithSrid' => array(
                 'value'    => 'SRID=4326;MULTIPOLYGON(((0 0,10 0,10 10,0 10,0 0),(5 5,7 5,7 7,5 7,5 5)),((1 1, 3 1, 3 3, 1 3, 1 1)))',
                 'expected' => array(
-                    'srid'  => 4326,
-                    'type'  => 'MULTIPOLYGON',
-                    'value' => array(
+                    'srid'      => 4326,
+                    'type'      => 'MULTIPOLYGON',
+                    'value'     => array(
                         array(
                             array(
                                 array(0, 0),
@@ -387,7 +442,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                                 array(1, 1)
                             )
                         )
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingMultiPolygonValueMissingParenthesis' => array(
@@ -397,49 +453,51 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'testParsingGeometryCollectionValue' => array(
                 'value'    => 'GEOMETRYCOLLECTION(POINT(10 10), POINT(30 30), LINESTRING(15 15, 20 20))',
                 'expected' => array(
-                    'srid'  => null,
-                    'type'  => 'GEOMETRYCOLLECTION',
-                    'value' => array(
+                    'srid'      => null,
+                    'type'      => 'GEOMETRYCOLLECTION',
+                    'value'     => array(
                         array(
-                            'type'  => 'POINT',
-                            'value' => array(10, 10)
+                            'type'      => 'POINT',
+                            'value'     => array(10, 10)
                         ),
                         array(
-                            'type'  => 'POINT',
-                            'value' => array(30, 30)
+                            'type'      => 'POINT',
+                            'value'     => array(30, 30)
                         ),
                         array(
-                            'type'  => 'LINESTRING',
-                            'value' => array(
+                            'type'      => 'LINESTRING',
+                            'value'     => array(
                                 array(15, 15),
                                 array(20, 20)
                             )
                         )
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingGeometryCollectionValueWithSrid' => array(
                 'value'    => 'SRID=4326;GEOMETRYCOLLECTION(POINT(10 10), POINT(30 30), LINESTRING(15 15, 20 20))',
                 'expected' => array(
-                    'srid'  => 4326,
-                    'type'  => 'GEOMETRYCOLLECTION',
-                    'value' => array(
+                    'srid'      => 4326,
+                    'type'      => 'GEOMETRYCOLLECTION',
+                    'value'     => array(
                         array(
-                            'type'  => 'POINT',
-                            'value' => array(10, 10)
+                            'type'      => 'POINT',
+                            'value'     => array(10, 10)
                         ),
                         array(
-                            'type'  => 'POINT',
-                            'value' => array(30, 30)
+                            'type'      => 'POINT',
+                            'value'     => array(30, 30)
                         ),
                         array(
-                            'type'  => 'LINESTRING',
-                            'value' => array(
+                            'type'      => 'LINESTRING',
+                            'value'     => array(
                                 array(15, 15),
                                 array(20, 20)
                             )
                         )
-                    )
+                    ),
+                    'dimension' => null
                 )
             ),
             'testParsingGeometryCollectionValueWithBadType' => array(
