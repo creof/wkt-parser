@@ -40,4 +40,4 @@ The parser will return an array with the keys ```srid```, ```type```, and ```val
 
 ## Exceptions
 
-The ```Lexer``` and ```Parser``` will throw expections implementing interface ```CrEOF\Geo\WKT\Exception\ExceptionInterface```.
+The ```Lexer``` and ```Parser``` will throw exceptions implementing interface ```CrEOF\Geo\WKT\Exception\ExceptionInterface```.
