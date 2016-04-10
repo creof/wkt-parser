@@ -99,6 +99,13 @@ class LexerTest extends \PHPUnit_Framework_TestCase
                     array(Lexer::T_M, 'M', 5)
                 )
             ),
+            'POINTZ' => array(
+                'value'    => 'POINTZ',
+                'expected' => array(
+                    array(Lexer::T_POINT, 'POINT', 0),
+                    array(Lexer::T_Z, 'Z', 5)
+                )
+            ),
             'POINT Z' => array(
                 'value'    => 'POINT Z',
                 'expected' => array(
