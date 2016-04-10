@@ -36,7 +36,6 @@ class Lexer extends AbstractLexer
     const T_NONE               = 1;
     const T_INTEGER            = 2;
     const T_STRING             = 3;
-    const T_E                  = 4;
     const T_FLOAT              = 5;
     const T_CLOSE_PARENTHESIS  = 6;
     const T_OPEN_PARENTHESIS   = 7;
@@ -97,17 +96,13 @@ class Lexer extends AbstractLexer
     {
         switch (true) {
             case (is_numeric($value)):
-                if (strpos($value, '.') !== false) {
-                    $value = (float) $value;
+                $value += 0;
 
-                    return self::T_FLOAT;
+                if (is_int($value)) {
+                    return self::T_INTEGER;
                 }
 
-                $value = (int) $value;
-
-                return self::T_INTEGER;
-            case (strtoupper($value) === 'E'):
-                return self::T_E;
+                return self::T_FLOAT;
             case (ctype_alpha($value)):
                 $name = __CLASS__ . '::T_' . strtoupper($value);
 
@@ -139,7 +134,7 @@ class Lexer extends AbstractLexer
         return array(
             '',
             'zm|[a-z]+[a-ln-z]',
-            '[+-]?[0-9]+(?:[\.][0-9]+)?'
+            '[+-]?[0-9]+(?:[\.][0-9]+)?(?:e[+-]?[0-9]+)?'
         );
     }
 
