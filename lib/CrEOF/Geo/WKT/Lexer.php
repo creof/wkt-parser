@@ -94,32 +94,36 @@ class Lexer extends AbstractLexer
      */
     protected function getType(&$value)
     {
-        switch (true) {
-            case (is_numeric($value)):
-                $value += 0;
+        if (is_numeric($value)) {
+            $value += 0;
 
-                if (is_int($value)) {
-                    return self::T_INTEGER;
-                }
+            if (is_int($value)) {
+                return self::T_INTEGER;
+            }
 
-                return self::T_FLOAT;
-            case (ctype_alpha($value)):
-                $name = __CLASS__ . '::T_' . strtoupper($value);
+            return self::T_FLOAT;
+        }
 
-                if (defined($name)) {
-                    return constant($name);
-                }
+        if (ctype_alpha($value)) {
+            $name = __CLASS__ . '::T_' . strtoupper($value);
 
-                return self::T_STRING;
-            case ($value === ','):
+            if (defined($name)) {
+                return constant($name);
+            }
+
+            return self::T_STRING;
+        }
+
+        switch ($value) {
+            case ',':
                 return self::T_COMMA;
-            case ($value === '('):
+            case '(':
                 return self::T_OPEN_PARENTHESIS;
-            case ($value === ')'):
+            case ')':
                 return self::T_CLOSE_PARENTHESIS;
-            case ($value === '='):
+            case '=':
                 return self::T_EQUALS;
-            case ($value === ';'):
+            case ';':
                 return self::T_SEMICOLON;
             default:
                 return self::T_NONE;
