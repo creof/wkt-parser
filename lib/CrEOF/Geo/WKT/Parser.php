@@ -54,7 +54,7 @@ class Parser
     private static $lexer;
 
     /**
-     * @param string $input
+     * @param string|null $input
      */
     public function __construct($input = null)
     {
@@ -68,6 +68,8 @@ class Parser
     }
 
     /**
+     * @param string|null $input
+     *
      * @return array
      */
     public function parse($input = null)
