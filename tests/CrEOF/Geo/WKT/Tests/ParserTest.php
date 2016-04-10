@@ -149,6 +149,15 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                     'dimension' => null
                 )
             ),
+            'testParsingPointZValueWithSrid' => array(
+                'value'    => 'SRID=4326;POINT(34.23 -87 10)',
+                'expected' => array(
+                    'srid'      => 4326,
+                    'type'      => 'POINT',
+                    'value'     => array(34.23, -87, 10),
+                    'dimension' => 'Z'
+                )
+            ),
             'testParsingPointValueScientificWithSrid' => array(
                 'value'    => 'SRID=4326;POINT(4.23e-005 -8E-003)',
                 'expected' => array(
@@ -165,6 +174,22 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'testParsingPointValueMissingCoordinate' => array(
                 'value'    => 'POINT(34.23)',
                 'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 11: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got ")" in value "POINT(34.23)"')
+            ),
+            'testParsingPointMValueMissingCoordinate' => array(
+                'value'    => 'POINTM(34.23 10)',
+                'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 15: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got ")" in value "POINTM(34.23 10)"')
+            ),
+            'testParsingPointMValueExtraCoordinate' => array(
+                'value'    => 'POINTM(34.23 10 30 40)',
+                'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 19: Error: Expected CrEOF\Geo\WKT\Lexer::T_CLOSE_PARENTHESIS, got "40" in value "POINTM(34.23 10 30 40)"')
+            ),
+            'testParsingPointZMValueMissingCoordinate' => array(
+                'value'    => 'POINTZM(34.23 10 45)',
+                'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 19: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got ")" in value "POINTZM(34.23 10 45)"')
+            ),
+            'testParsingPointZMValueExtraCoordinate' => array(
+                'value'    => 'POINTZM(34.23 10 45 4.5 99)',
+                'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 24: Error: Expected CrEOF\Geo\WKT\Lexer::T_CLOSE_PARENTHESIS, got "99" in value "POINTZM(34.23 10 45 4.5 99)"')
             ),
             'testParsingPointValueShortString' => array(
                 'value'    => 'POINT(34.23',
@@ -190,6 +215,42 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                     'dimension' => null
                 )
             ),
+            'testParsingLineStringZValue' => array(
+                'value'    => 'LINESTRING(34.23 -87 10, 45.3 -92 10)',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'LINESTRING',
+                    'value'     => array(
+                        array(34.23, -87, 10),
+                        array(45.3, -92, 10)
+                    ),
+                    'dimension' => 'Z'
+                )
+            ),
+            'testParsingLineStringMValue' => array(
+                'value'    => 'LINESTRINGM(34.23 -87 10, 45.3 -92 10)',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'LINESTRING',
+                    'value'     => array(
+                        array(34.23, -87, 10),
+                        array(45.3, -92, 10)
+                    ),
+                    'dimension' => 'M'
+                )
+            ),
+            'testParsingLineStringZMValue' => array(
+                'value'    => 'LINESTRINGZM(34.23 -87 10 20, 45.3 -92 10 20)',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'LINESTRING',
+                    'value'     => array(
+                        array(34.23, -87, 10, 20),
+                        array(45.3, -92, 10, 20)
+                    ),
+                    'dimension' => 'ZM'
+                )
+            ),
             'testParsingLineStringValueWithSrid' => array(
                 'value'    => 'SRID=4326;LINESTRING(34.23 -87, 45.3 -92)',
                 'expected' => array(
@@ -206,6 +267,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 'value'    => 'LINESTRING(34.23 -87, 45.3)',
                 'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 26: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got ")" in value "LINESTRING(34.23 -87, 45.3)"')
             ),
+            'testParsingLineStringValueMismatchedDimensions' => array(
+                'value'    => 'LINESTRING(34.23 -87, 45.3 56 23.4)',
+                'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 30: Error: Expected CrEOF\Geo\WKT\Lexer::T_CLOSE_PARENTHESIS, got "23.4" in value "LINESTRING(34.23 -87, 45.3 56 23.4)"')
+            ),
             'testParsingPolygonValue' => array(
                 'value'    => 'POLYGON((0 0,10 0,10 10,0 10,0 0))',
                 'expected' => array(
@@ -221,6 +286,57 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                         )
                     ) ,
                     'dimension' => null
+                )
+            ),
+            'testParsingPolygonZValue' => array(
+                'value'    => 'POLYGON((0 0 0,10 0 0,10 10 0,0 10 0,0 0 0))',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'POLYGON',
+                    'value'     => array(
+                        array(
+                            array(0, 0, 0),
+                            array(10, 0, 0),
+                            array(10, 10, 0),
+                            array(0, 10, 0),
+                            array(0, 0, 0)
+                        )
+                    ) ,
+                    'dimension' => 'Z'
+                )
+            ),
+            'testParsingPolygonMValue' => array(
+                'value'    => 'POLYGONM((0 0 0,10 0 0,10 10 0,0 10 0,0 0 0))',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'POLYGON',
+                    'value'     => array(
+                        array(
+                            array(0, 0, 0),
+                            array(10, 0, 0),
+                            array(10, 10, 0),
+                            array(0, 10, 0),
+                            array(0, 0, 0)
+                        )
+                    ) ,
+                    'dimension' => 'M'
+                )
+            ),
+            'testParsingPolygonZMValue' => array(
+                'value'    => 'POLYGONZM((0 0 0 1,10 0 0 1,10 10 0 1,0 10 0 1,0 0 0 1))',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'POLYGON',
+                    'value'     => array(
+                        array(
+                            array(0, 0, 0, 1),
+                            array(10, 0, 0, 1),
+                            array(10, 10, 0, 1),
+                            array(0, 10, 0, 1),
+                            array(0, 0, 0, 1)
+                        )
+                    ) ,
+                    'dimension' => 'ZM'
                 )
             ),
             'testParsingPolygonValueWithSrid' => array(
@@ -292,6 +408,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 'value'    => 'POLYGON(0 0,10 0,10 10,0 10,0 0)',
                 'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 8: Error: Expected CrEOF\Geo\WKT\Lexer::T_OPEN_PARENTHESIS, got "0" in value "POLYGON(0 0,10 0,10 10,0 10,0 0)"')
             ),
+            'testParsingPolygonValueMismatchedDimension' => array(
+                'value'    => 'POLYGON((0 0,10 0,10 10 10,0 10,0 0))',
+                'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 24: Error: Expected CrEOF\Geo\WKT\Lexer::T_CLOSE_PARENTHESIS, got "10" in value "POLYGON((0 0,10 0,10 10 10,0 10,0 0))"')
+            ),
             'testParsingPolygonValueMultiRingMissingComma' => array(
                 'value'    => 'POLYGON((0 0,10 0,10 10,0 10,0 0)(5 5,7 5,7 7,5 7,5 5))',
                 'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 33: Error: Expected CrEOF\Geo\WKT\Lexer::T_CLOSE_PARENTHESIS, got "(" in value "POLYGON((0 0,10 0,10 10,0 10,0 0)(5 5,7 5,7 7,5 7,5 5))"')
@@ -308,6 +428,20 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                         array(0, 10)
                     ),
                     'dimension' => null
+                )
+            ),
+            'testParsingMultiPointMValue' => array(
+                'value'    => 'MULTIPOINTM(0 0 0,10 0 0,10 10 0,0 10 0)',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'MULTIPOINT',
+                    'value'     => array(
+                        array(0, 0, 0),
+                        array(10, 0, 0),
+                        array(10, 10, 0),
+                        array(0, 10, 0)
+                    ),
+                    'dimension' => 'M'
                 )
             ),
             'testParsingMultiPointValueWithSrid' => array(
@@ -348,6 +482,28 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                     'dimension' => null
+                )
+            ),
+            'testParsingMultiLineStringZValue' => array(
+                'value'    => 'MULTILINESTRING((0 0 0,10 0 0,10 10 0,0 10 0),(5 5 1,7 5 1,7 7 1,5 7 1))',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'MULTILINESTRING',
+                    'value'     => array(
+                        array(
+                            array(0, 0, 0),
+                            array(10, 0, 0),
+                            array(10, 10, 0),
+                            array(0, 10, 0),
+                        ),
+                        array(
+                            array(5, 5, 1),
+                            array(7, 5, 1),
+                            array(7, 7, 1),
+                            array(5, 7, 1),
+                        )
+                    ),
+                    'dimension' => 'Z'
                 )
             ),
             'testParsingMultiLineStringValueWithSrid' => array(
@@ -475,6 +631,31 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                     'dimension' => null
                 )
             ),
+            'testParsingGeometryCollectionMValue' => array(
+                'value'    => 'GEOMETRYCOLLECTIONM(POINT(10 10 0), POINT(30 30 0), LINESTRING(15 15 0, 20 20 0))',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'GEOMETRYCOLLECTION',
+                    'value'     => array(
+                        array(
+                            'type'      => 'POINT',
+                            'value'     => array(10, 10, 0)
+                        ),
+                        array(
+                            'type'      => 'POINT',
+                            'value'     => array(30, 30, 0)
+                        ),
+                        array(
+                            'type'      => 'LINESTRING',
+                            'value'     => array(
+                                array(15, 15, 0),
+                                array(20, 20, 0)
+                            )
+                        )
+                    ),
+                    'dimension' => 'M'
+                )
+            ),
             'testParsingGeometryCollectionValueWithSrid' => array(
                 'value'    => 'SRID=4326;GEOMETRYCOLLECTION(POINT(10 10), POINT(30 30), LINESTRING(15 15, 20 20))',
                 'expected' => array(
@@ -503,6 +684,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'testParsingGeometryCollectionValueWithBadType' => array(
                 'value'    => 'GEOMETRYCOLLECTION(PNT(10 10), POINT(30 30), LINESTRING(15 15, 20 20))',
                 'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 19: Error: Expected CrEOF\Geo\WKT\Lexer::T_TYPE, got "PNT" in value "GEOMETRYCOLLECTION(PNT(10 10), POINT(30 30), LINESTRING(15 15, 20 20))"')
+            ),
+            'testParsingGeometryCollectionValueWithMismatchedDimenstion' => array(
+                'value'    => 'GEOMETRYCOLLECTION(POINT(10 10), POINT(30 30 10), LINESTRING(15 15, 20 20))',
+                'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 45: Error: Expected CrEOF\Geo\WKT\Lexer::T_CLOSE_PARENTHESIS, got "10" in value "GEOMETRYCOLLECTION(POINT(10 10), POINT(30 30 10), LINESTRING(15 15, 20 20))"')
             )
         );
     }
