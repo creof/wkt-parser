@@ -49,6 +49,11 @@ class Parser
     private $srid;
 
     /**
+     * @var string
+     */
+    private $dimension;
+
+    /**
      * @var Lexer
      */
     private $lexer;
@@ -79,14 +84,16 @@ class Parser
         $this->lexer->setInput($this->input);
         $this->lexer->moveNext();
 
-        $this->srid = null;
+        $this->srid      = null;
+        $this->dimension = null;
 
         if ($this->lexer->isNextToken(Lexer::T_SRID)) {
             $this->srid = $this->srid();
         }
 
-        $geometry         = $this->geometry();
-        $geometry['srid'] = $this->srid;
+        $geometry              = $this->geometry();
+        $geometry['srid']      = $this->srid;
+        $geometry['dimension'] = $this->dimension;
 
         return $geometry;
     }
@@ -133,6 +140,8 @@ class Parser
 
         if ($this->lexer->isNextTokenAny(array(Lexer::T_Z, Lexer::T_M, Lexer::T_ZM))) {
             $this->match($this->lexer->lookahead['type']);
+
+            $this->dimension = $this->lexer->value();
         }
 
         $this->match(Lexer::T_OPEN_PARENTHESIS);
@@ -154,10 +163,42 @@ class Parser
      */
     protected function point()
     {
-        $x = $this->coordinate();
-        $y = $this->coordinate();
+        if (null !== $this->dimension) {
+            return $this->coordinates(2 + count($this->dimension));
+        }
 
-        return array($x, $y);
+        $values = $this->coordinates(2);
+
+        for ($i = 3; $i <= 4 && $this->lexer->isNextTokenAny(array(Lexer::T_FLOAT, Lexer::T_INTEGER)); $i++) {
+            $values[] = $this->coordinate();
+        }
+
+        switch (count($values)) {
+            case 3:
+                $this->dimension = 'Z';
+                break;
+            case 4:
+                $this->dimension = 'ZM';
+                break;
+        }
+
+        return $values;
+    }
+
+    /**
+     * @param int $count
+     *
+     * @return array
+     */
+    protected function coordinates($count)
+    {
+        $values = array();
+
+        for ($i = 1; $i <= $count; $i++) {
+            $values[] = $this->coordinate();
+        }
+
+        return $values;
     }
 
     /**
