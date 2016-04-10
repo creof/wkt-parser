@@ -171,16 +171,7 @@ class Parser
     {
         $this->match((self::$lexer->isNextToken(Lexer::T_FLOAT) ? Lexer::T_FLOAT : Lexer::T_INTEGER));
 
-        if (! self::$lexer->isNextToken(Lexer::T_E)) {
-            return self::$lexer->value();
-        }
-
-        $number = self::$lexer->value();
-
-        $this->match(Lexer::T_E);
-        $this->match(Lexer::T_INTEGER);
-
-        return $number * pow(10, self::$lexer->value());
+        return self::$lexer->value();
     }
 
     /**
