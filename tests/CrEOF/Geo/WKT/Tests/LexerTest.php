@@ -227,9 +227,7 @@ class LexerTest extends \PHPUnit_Framework_TestCase
                     array(Lexer::T_FLOAT, 20.5, 42),
                     array(Lexer::T_FLOAT, 25.9, 47),
                     array(Lexer::T_COMMA, ',', 51),
-                    array(Lexer::T_INTEGER, 53, 53),
-                    array(Lexer::T_E, 'E', 55),
-                    array(Lexer::T_INTEGER, -3, 56),
+                    array(Lexer::T_FLOAT, 0.053, 53),
                     array(Lexer::T_INTEGER, 60, 61),
                     array(Lexer::T_CLOSE_PARENTHESIS, ')', 63)
                 )
