@@ -23,5 +23,10 @@
         "psr-0": {
             "CrEOF\\Geo\\WKT": "lib/"
         }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "CrEOF\\Geo\\WKT\\Tests": "tests/"
+        }
     }
 }
