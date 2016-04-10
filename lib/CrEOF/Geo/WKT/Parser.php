@@ -58,7 +58,9 @@ class Parser
      */
     public function __construct($input = null)
     {
-        self::$lexer = new Lexer();
+        if (null === self::$lexer) {
+            self::$lexer = new Lexer();
+        }
 
         if (null !== $input) {
             $this->input = $input;
