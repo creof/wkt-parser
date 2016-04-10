@@ -93,7 +93,7 @@ class Parser
 
         $geometry              = $this->geometry();
         $geometry['srid']      = $this->srid;
-        $geometry['dimension'] = $this->dimension;
+        $geometry['dimension'] = '' === $this->dimension ? null : $this->dimension;
 
         return $geometry;
     }
@@ -174,6 +174,9 @@ class Parser
         }
 
         switch (count($values)) {
+            case 2:
+                $this->dimension = '';
+                break;
             case 3:
                 $this->dimension = 'Z';
                 break;
