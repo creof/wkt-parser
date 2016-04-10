@@ -123,8 +123,8 @@ class LexerTest extends \PHPUnit_Framework_TestCase
             'POINTZM' => array(
                 'value'    => 'POINTZM',
                 'expected' => array(
-                    array(Lexer::T_STRING, 'POINTZ', 0),
-                    array(Lexer::T_M, 'M', 6)
+                    array(Lexer::T_POINT, 'POINT', 0),
+                    array(Lexer::T_ZM, 'ZM', 5)
                 )
             ),
             'LINESTRING' => array(
