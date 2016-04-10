@@ -137,7 +137,7 @@ class Lexer extends AbstractLexer
     {
         return array(
             '',
-            'zm|[a-z]+[a-ln-z]',
+            'zm|[a-z]+[a-ln-y]',
             '[+-]?[0-9]+(?:[\.][0-9]+)?(?:e[+-]?[0-9]+)?'
         );
     }
