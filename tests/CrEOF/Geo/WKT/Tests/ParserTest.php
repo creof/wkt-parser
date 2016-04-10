@@ -23,6 +23,7 @@
 
 namespace CrEOF\Geo\WKT\Tests;
 
+use CrEOF\Geo\WKT\Exception\ExceptionInterface;
 use CrEOF\Geo\WKT\Exception\UnexpectedValueException;
 use CrEOF\Geo\WKT\Parser;
 
@@ -44,11 +45,11 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $parser = new Parser($value);
 
-        try {
-            $actual = $parser->parse();
-        } catch (\Exception $e) {
-            $actual = $e;
+        if ($expected instanceof ExceptionInterface) {
+            $this->setExpectedException(get_class($expected), $expected->getMessage());
         }
+
+        $actual = $parser->parse();
 
         $this->assertEquals($expected, $actual);
     }
@@ -58,13 +59,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser();
 
         foreach ($this->parserTestData() as $name => $testData) {
-            try {
-                $actual = $parser->parse($testData['value']);
-            } catch (\Exception $e) {
-                $actual = $e;
+            $value    = $testData['value'];
+            $expected = $testData['expected'];
+
+            if ($expected instanceof ExceptionInterface) {
+                $this->setExpectedException(get_class($expected), $expected->getMessage());
             }
 
-            $this->assertEquals($testData['expected'], $actual, 'Failed dataset "'. $name . '"');
+            $actual = $parser->parse($value);
+
+            $this->assertEquals($expected, $actual, 'Failed dataset "'. $name . '"');
         }
     }
 
