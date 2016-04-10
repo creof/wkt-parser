@@ -164,7 +164,7 @@ class Parser
     protected function point()
     {
         if (null !== $this->dimension) {
-            return $this->coordinates(2 + count($this->dimension));
+            return $this->coordinates(2 + strlen($this->dimension));
         }
 
         $values = $this->coordinates(2);
