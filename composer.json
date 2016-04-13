@@ -16,12 +16,17 @@
         "doctrine/lexer": "~1.0"
     },
     "require-dev": {
-        "phpunit/phpunit":               "<5.0",
+        "phpunit/phpunit":               ">=4.8",
         "codeclimate/php-test-reporter": "dev-master"
     },
     "autoload": {
         "psr-0": {
             "CrEOF\\Geo\\WKT": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "CrEOF\\Geo\\WKT\\Tests": "tests/"
         }
     }
 }

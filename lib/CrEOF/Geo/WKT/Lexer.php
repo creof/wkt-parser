@@ -36,7 +36,6 @@ class Lexer extends AbstractLexer
     const T_NONE               = 1;
     const T_INTEGER            = 2;
     const T_STRING             = 3;
-    const T_E                  = 4;
     const T_FLOAT              = 5;
     const T_CLOSE_PARENTHESIS  = 6;
     const T_OPEN_PARENTHESIS   = 7;
@@ -95,36 +94,36 @@ class Lexer extends AbstractLexer
      */
     protected function getType(&$value)
     {
-        switch (true) {
-            case (is_numeric($value)):
-                if (strpos($value, '.') !== false) {
-                    $value = (float) $value;
+        if (is_numeric($value)) {
+            $value += 0;
 
-                    return self::T_FLOAT;
-                }
-
-                $value = (int) $value;
-
+            if (is_int($value)) {
                 return self::T_INTEGER;
-            case (strtoupper($value) === 'E'):
-                return self::T_E;
-            case (ctype_alpha($value)):
-                $name = __CLASS__ . '::T_' . strtoupper($value);
+            }
 
-                if (defined($name)) {
-                    return constant($name);
-                }
+            return self::T_FLOAT;
+        }
 
-                return self::T_STRING;
-            case ($value === ','):
+        if (ctype_alpha($value)) {
+            $name = __CLASS__ . '::T_' . strtoupper($value);
+
+            if (defined($name)) {
+                return constant($name);
+            }
+
+            return self::T_STRING;
+        }
+
+        switch ($value) {
+            case ',':
                 return self::T_COMMA;
-            case ($value === '('):
+            case '(':
                 return self::T_OPEN_PARENTHESIS;
-            case ($value === ')'):
+            case ')':
                 return self::T_CLOSE_PARENTHESIS;
-            case ($value === '='):
+            case '=':
                 return self::T_EQUALS;
-            case ($value === ';'):
+            case ';':
                 return self::T_SEMICOLON;
             default:
                 return self::T_NONE;
@@ -138,8 +137,8 @@ class Lexer extends AbstractLexer
     {
         return array(
             '',
-            'zm|[a-z]+[a-ln-z]',
-            '[+-]?[0-9]+(?:[\.][0-9]+)?'
+            'zm|[a-z]+[a-ln-y]',
+            '[+-]?[0-9]+(?:[\.][0-9]+)?(?:e[+-]?[0-9]+)?'
         );
     }
 
