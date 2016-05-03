@@ -4,7 +4,29 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
 ### Changed
+
+### Removed
+
+## [2.2.0] - 2016-05-03
+### Added
+- Tests namespace to PSR-0 autoload in composer.json.
+- Support for 3DZ, 3DM, 4DZM objects added. Dimension(s) now in 'dimension' key of returned array.
+
+### Changed
+- Token pattern regex changed to capture numbers in scientific notation as a single value.
+- Let PHP handle scientific number conversion to float instead of manually calculating.
+- Only instantiate Lexer object in Parser constructor if it doesn't exist.
+- Move function return value tests from switch statement in Lexer. Switch statement now doing only string comparison.
+- Remove static visibility from Lexer instance in Parser.
+- PHPUnit now bootstraps Composer autoload.
+- Update PHPUnit config XML to be compliant with XSD.
+- Documentation updated for 3DZ, 3DM, 4DZM support.
+
+### Removed
+- Removed E token used with scientific notation from Lexer.
+- Removed now unused TestInit.
 
 ## [2.1.0] - 2016-04-09
 ### Added
