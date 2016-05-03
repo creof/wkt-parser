@@ -4,8 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Token to Lexer for EMPTY keyword.
+- Tests for EMPTY geometry.
 
 ### Changed
+- Empty array returned for TOKEN token.
 
 ### Removed
 
