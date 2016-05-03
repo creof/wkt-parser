@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
-## [2.2.0] - 2016-xx-xx
+## [2.2.0] - 2016-05-03
 ### Added
 - Tests namespace to PSR-0 autoload in composer.json.
 - Support for 3DZ, 3DM, 4DZM objects added. Dimension(s) now in 'dimension' key of returned array.
