@@ -86,6 +86,15 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 'value'    => 'PNT(10 10)',
                 'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 0: Error: Expected CrEOF\Geo\WKT\Lexer::T_TYPE, got "PNT" in value "PNT(10 10)"')
             ),
+            'testParsingEmptyPointValue' => array(
+                'value'    => 'POINT EMPTY',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'POINT',
+                    'value'     => array(),
+                    'dimension' => null
+                )
+            ),
             'testParsingPointValue' => array(
                 'value'    => 'POINT(34.23 -87)',
                 'expected' => array(
@@ -203,6 +212,15 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 'value'    => 'POINT(10, 10)',
                 'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 8: Error: Expected CrEOF\Geo\WKT\Lexer::T_INTEGER, got "," in value "POINT(10, 10)"')
             ),
+            'testParsingEmptyLineStringValue' => array(
+                'value'    => 'LINESTRING EMPTY',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'LINESTRING',
+                    'value'     => array(),
+                    'dimension' => null
+                )
+            ),
             'testParsingLineStringValue' => array(
                 'value'    => 'LINESTRING(34.23 -87, 45.3 -92)',
                 'expected' => array(
@@ -271,6 +289,15 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 'value'    => 'LINESTRING(34.23 -87, 45.3 56 23.4)',
                 'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 30: Error: Expected CrEOF\Geo\WKT\Lexer::T_CLOSE_PARENTHESIS, got "23.4" in value "LINESTRING(34.23 -87, 45.3 56 23.4)"')
             ),
+            'testParsingEmptyPolygonValue' => array(
+                'value'    => 'POLYGON EMPTY',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'POLYGON',
+                    'value'     => array(),
+                    'dimension' => null
+                )
+            ),
             'testParsingPolygonValue' => array(
                 'value'    => 'POLYGON((0 0,10 0,10 10,0 10,0 0))',
                 'expected' => array(
@@ -284,7 +311,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                             array(0, 10),
                             array(0, 0)
                         )
-                    ) ,
+                    ),
                     'dimension' => null
                 )
             ),
@@ -301,7 +328,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                             array(0, 10, 0),
                             array(0, 0, 0)
                         )
-                    ) ,
+                    ),
                     'dimension' => 'Z'
                 )
             ),
@@ -318,7 +345,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                             array(0, 10, 0),
                             array(0, 0, 0)
                         )
-                    ) ,
+                    ),
                     'dimension' => 'M'
                 )
             ),
@@ -335,7 +362,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                             array(0, 10, 0, 1),
                             array(0, 0, 0, 1)
                         )
-                    ) ,
+                    ),
                     'dimension' => 'ZM'
                 )
             ),
@@ -605,6 +632,29 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             'testParsingMultiPolygonValueMissingParenthesis' => array(
                 'value'    => 'MULTIPOLYGON(((0 0,10 0,10 10,0 10,0 0),(5 5,7 5,7 7,5 7,5 5)),(1 1, 3 1, 3 3, 1 3, 1 1))',
                 'expected' => new UnexpectedValueException('[Syntax Error] line 0, col 64: Error: Expected CrEOF\Geo\WKT\Lexer::T_OPEN_PARENTHESIS, got "1" in value "MULTIPOLYGON(((0 0,10 0,10 10,0 10,0 0),(5 5,7 5,7 7,5 7,5 5)),(1 1, 3 1, 3 3, 1 3, 1 1))"')
+            ),
+            'testParsingEmptyGeometryCollectionValue' => array(
+                'value'    => 'GEOMETRYCOLLECTION EMPTY',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'GEOMETRYCOLLECTION',
+                    'value'     => array(),
+                    'dimension' => null
+                )
+            ),
+            'testParsingGeometryCollectionValueWithEmptyObject' => array(
+                'value'    => 'GEOMETRYCOLLECTION(POINT EMPTY)',
+                'expected' => array(
+                    'srid'      => null,
+                    'type'      => 'GEOMETRYCOLLECTION',
+                    'value'     => array(
+                        array(
+                            'type'      => 'POINT',
+                            'value'     => array()
+                        )
+                    ),
+                    'dimension' => null
+                )
             ),
             'testParsingGeometryCollectionValue' => array(
                 'value'    => 'GEOMETRYCOLLECTION(POINT(10 10), POINT(30 30), LINESTRING(15 15, 20 20))',
