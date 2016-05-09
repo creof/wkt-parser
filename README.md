@@ -24,18 +24,20 @@ If many values need to be parsed, a single ```Parser``` instance can be used:
 ```php
 $input1 = 'POLYGON((0 0,10 0,10 10,0 10,0 0))';
 $input2 = 'POINT(0,0)';
+$input3 = 'POINT EMPTY';
 
 $parser = new Parser();
 
 $value1 = $parser->parse($input1);
 $value2 = $parser->parse($input2);
+$value3 = $parser->parse($input3);
 ```
 
 ## Return
 
 The parser will return an array with the keys ```type```, ```value```, ```srid```, and ```dimension```.
 - ```type``` string, the spatial object type (POINT, LINESTRING, etc.) without any dimension.
-- ```value``` array, contains integer or float values for points, or nested arrays containing these based on spatial object type.
+- ```value``` array, contains integer or float values for points, nested arrays containing these based on spatial object type, or empty array for EMPTY geometry.
 - ```srid``` integer, the SRID if EWKT value was parsed, ```null``` otherwise.
 - ```dimension``` string, will contain ```Z```, ```M```, or ```ZM``` for the respective 3D and 4D objects, ```null``` otherwise.
 

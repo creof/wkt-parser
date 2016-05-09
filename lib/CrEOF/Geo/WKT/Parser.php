@@ -144,6 +144,25 @@ class Parser
             $this->dimension = $this->lexer->value();
         }
 
+        if (! $this->lexer->isNextToken(Lexer::T_EMPTY)) {
+            return $this->value($type);
+        }
+
+        $this->match(Lexer::T_EMPTY);
+
+        return array(
+            'type'  => $type,
+            'value' => array()
+        );
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return array
+     */
+    protected function value($type)
+    {
         $this->match(Lexer::T_OPEN_PARENTHESIS);
 
         $value = $this->$type();
@@ -155,7 +174,6 @@ class Parser
             'value' => $value
         );
     }
-
     /**
      * Match a coordinate pair
      *

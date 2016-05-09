@@ -79,10 +79,23 @@ class LexerTest extends \PHPUnit_Framework_TestCase
     public function tokenData()
     {
         return array(
+            'EMPTY' => array(
+                'value'    => 'EMPTY',
+                'expected' => array(
+                    array(Lexer::T_EMPTY, 'EMPTY', 0)
+                )
+            ),
             'POINT' => array(
                 'value'    => 'POINT',
                 'expected' => array(
                     array(Lexer::T_POINT, 'POINT', 0)
+                )
+            ),
+            'POINT EMPTY' => array(
+                'value'    => 'POINT EMPTY',
+                'expected' => array(
+                    array(Lexer::T_POINT, 'POINT', 0),
+                    array(Lexer::T_EMPTY, 'EMPTY', 6)
                 )
             ),
             'POINTM' => array(

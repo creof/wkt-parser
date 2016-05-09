@@ -44,6 +44,7 @@ class Lexer extends AbstractLexer
     const T_EQUALS             = 11;
     const T_MINUS              = 14;
     const T_SEMICOLON          = 50;
+    const T_EMPTY              = 60;
     const T_SRID               = 500;
     const T_ZM                 = 501;
     const T_Z                  = 502;
