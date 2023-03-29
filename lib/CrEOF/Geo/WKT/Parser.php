@@ -36,11 +36,6 @@ class Parser
     /**
      * @var string
      */
-    private $type;
-
-    /**
-     * @var string
-     */
     private $input;
 
     /**
@@ -135,8 +130,7 @@ class Parser
      */
     protected function geometry()
     {
-        $type       = $this->type();
-        $this->type = $type;
+        $type = $this->type();
 
         if ($this->lexer->isNextTokenAny(array(Lexer::T_Z, Lexer::T_M, Lexer::T_ZM))) {
             $this->match($this->lexer->lookahead['type']);
@@ -349,9 +343,11 @@ class Parser
      */
     protected function match($token)
     {
-        $lookaheadType = $this->lexer->lookahead['type'];
+        if ($this->lexer->lookahead !== null) {
+            $lookaheadType = $this->lexer->lookahead['type'];
+        }
 
-        if ($lookaheadType !== $token && ($token !== Lexer::T_TYPE || $lookaheadType <= Lexer::T_TYPE)) {
+        if (!isset($lookaheadType) || ($lookaheadType !== $token && ($token !== Lexer::T_TYPE || $lookaheadType <= Lexer::T_TYPE))) {
             throw $this->syntaxError($this->lexer->getLiteral($token));
         }
 

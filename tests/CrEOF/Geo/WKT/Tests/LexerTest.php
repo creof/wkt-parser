@@ -24,6 +24,7 @@
 namespace CrEOF\Geo\WKT\Tests;
 
 use CrEOF\Geo\WKT\Lexer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Lexer tests
@@ -31,7 +32,7 @@ use CrEOF\Geo\WKT\Lexer;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license http://dlambert.mit-license.org MIT
  */
-class LexerTest extends \PHPUnit_Framework_TestCase
+class LexerTest extends TestCase
 {
     /**
      * @param       $value
@@ -58,7 +59,7 @@ class LexerTest extends \PHPUnit_Framework_TestCase
     {
         $lexer = new Lexer();
 
-        foreach ($this->tokenData() as $name => $testData) {
+        foreach (self::tokenData() as $name => $testData) {
             $lexer->setInput($testData['value']);
 
             foreach ($testData['expected'] as $token) {
@@ -76,7 +77,7 @@ class LexerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function tokenData()
+    public static function tokenData()
     {
         return array(
             'POINT' => array(

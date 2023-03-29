@@ -26,6 +26,7 @@ namespace CrEOF\Geo\WKT\Tests;
 use CrEOF\Geo\WKT\Exception\ExceptionInterface;
 use CrEOF\Geo\WKT\Exception\UnexpectedValueException;
 use CrEOF\Geo\WKT\Parser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Basic parser tests
@@ -33,11 +34,11 @@ use CrEOF\Geo\WKT\Parser;
  * @author  Derek J. Lambert <dlambert@dereklambert.com>
  * @license http://dlambert.mit-license.org MIT
  */
-class ParserTest extends \PHPUnit_Framework_TestCase
+class ParserTest extends TestCase
 {
     /**
      * @param string $value
-     * @param array  $expected
+     * @param array|ExceptionInterface  $expected
      *
      * @dataProvider parserTestData
      */
@@ -46,7 +47,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser($value);
 
         if ($expected instanceof ExceptionInterface) {
-            $this->setExpectedException(get_class($expected), $expected->getMessage());
+            $this->expectException(get_class($expected));
+            $this->expectExceptionMessage($expected->getMessage());
         }
 
         $actual = $parser->parse();
@@ -58,12 +60,13 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $parser = new Parser();
 
-        foreach ($this->parserTestData() as $name => $testData) {
+        foreach (self::parserTestData() as $name => $testData) {
             $value    = $testData['value'];
             $expected = $testData['expected'];
 
             if ($expected instanceof ExceptionInterface) {
-                $this->setExpectedException(get_class($expected), $expected->getMessage());
+                $this->expectException(get_class($expected));
+                $this->expectExceptionMessage($expected->getMessage());
             }
 
             $actual = $parser->parse($value);
@@ -75,7 +78,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array[]
      */
-    public function parserTestData()
+    public static function parserTestData()
     {
         return array(
             'testParsingGarbage' => array(
